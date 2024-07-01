@@ -1,4 +1,3 @@
-// ExploreItem.js
 import React from "react";
 import ExploreBook from "./ExploreBook";
 
