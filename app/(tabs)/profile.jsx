@@ -11,12 +11,18 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { images } from "../../constants";
 
-// Sample user data
-const user = {
-  profilePicture: images.profile,
-  name: "Sapumal Kumara",
-  id: "12345678",
-};
+
+/////////////////////////////////////////////////////////////////
+import { useGlobalContext } from "../../context/GlobalProvider"; 
+import { useNavigation } from "@react-navigation/native";
+/////////////////////////////////////////////////////////////////
+
+// // Sample user data
+// const user = {
+//   profilePicture: images.profile,
+//   name: "Sapumal Kumara",
+//   id: "12345678",
+// };
 
 const books = [
   {
@@ -58,11 +64,24 @@ const books = [
 ];
 
 const Profile = () => {
+
+  ////////////////////////////////////////////////////////////////////////
+  const navigation = useNavigation();
+  const { isLoggedIn, setIsLoggedIn } = useGlobalContext();
+  const { user, setUser } = useGlobalContext();
+  ////////////////////////////////////////////////////////////////////////
+
+
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isProgressVisible, setIsProgressVisible] = useState(false);
   const [isMyBooksVisible, setIsMyBooksVisible] = useState(false);
   const [isPublishBookVisible, setIsPublishBookVisible] = useState(false); // State for Publish Book visibility
   const [selectedGender, setSelectedGender] = useState("Male"); // State for gender selection
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigation.navigate('signin');
+  }
 
   const toggleSettings = () => {
     setIsSettingsVisible(!isSettingsVisible);
@@ -328,6 +347,13 @@ const Profile = () => {
               >
                 <Icon name="cog" size={24} color="black" />
                 <Text className="ml-4 text-lg">Settings</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleLogout}
+                className="flex-row items-center p-4"
+              >
+                <Icon name="user" size={24} color="black" />
+                <Text className="ml-6 text-lg text-red-600">Logout</Text>
               </TouchableOpacity>
             </View>
           </>
