@@ -1,5 +1,4 @@
-import { images } from "../../constants";
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -8,53 +7,99 @@ import {
   Text,
   TextInput,
   Image,
+  Alert,
 } from "react-native";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebaseInit"; // Update the path as per your project structure
+import { useGlobalContext } from "../../context/GlobalProvider"; 
 
-const wishlist = () => {
+const Wishlist = () => {
+  const { user} = useGlobalContext();
   // Sample user data
-  const user = {
-    profilePicture: images.profile,
-    name: "Sapumal Kumara",
-    id: "12345678",
+  // const user = {
+  //   name: "Sapumal Kumara",
+  //   id: "12345678",
+  // };
+
+  const [fullName, setFullName] = useState("");
+  const [authorName, setAuthorName] = useState("");
+  const [edition, setEdition] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleRequest = async () => {
+    if (!fullName || !authorName || !edition || !description) {
+      Alert.alert("Error", "All fields are required.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "wishlist"), {
+        fullName: fullName,
+        authorName: authorName,
+        edition: edition,
+        description: description,
+        userId: user.id, // Include user ID for reference
+      });
+      Alert.alert("Success", "Request submitted successfully.");
+      // Clear form fields after submission if needed
+      setFullName("");
+      setAuthorName("");
+      setEdition("");
+      setDescription("");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   };
+
   return (
-    <SafeAreaView className="mt-10">
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 16 }}>
         <View>
-          <View className="items-center">
-            <View className="items-center mt-6 mb-6 justify-between space-y-4">
-              <Text className="text-3xl">Wishlist</Text>
-              <Text className="text-center ">
-                Request any book. We'll notify you when it's available.
-              </Text>
-            </View>
+          <View style={{ alignItems: "center", marginTop: 24 }}>
+            <Text style={{ fontSize: 24, marginBottom: 8 }}>Wishlist</Text>
+            <Text style={{ textAlign: "center", marginBottom: 16 }}>
+              Request any book. We'll notify you when it's available.
+            </Text>
             <Image
-              source={images.profile}
-              className="w-24 h-24 rounded-full mb-2"
+              source={require("../../assets/images/profile.png")} // Update with your profile image source
+              style={{ width: 100, height: 100, borderRadius: 50, marginBottom: 8 }}
             />
-            <Text className="text-xl font-semibold">{user.name}</Text>
-            <Text className="text-gray-500">#{user.id}</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>{user.name}</Text>
+            <Text style={{ color: "gray" }}>#{user.id}</Text>
           </View>
 
-          <View className="space-y-4">
+          <View style={{ marginTop: 24 }}>
             <TextInput
-              className="bg-gray-200 rounded-md p-3"
+              style={{ backgroundColor: "#E5E7EB", padding: 12, borderRadius: 8, marginBottom: 12 }}
               placeholder="E-Book Full Name"
+              value={fullName}
+              onChangeText={(text) => setFullName(text)}
             />
             <TextInput
-              className="bg-gray-200 rounded-md p-3"
+              style={{ backgroundColor: "#E5E7EB", padding: 12, borderRadius: 8, marginBottom: 12 }}
               placeholder="E-Book Author Name"
+              value={authorName}
+              onChangeText={(text) => setAuthorName(text)}
             />
             <TextInput
-              className="bg-gray-200 rounded-md p-3"
+              style={{ backgroundColor: "#E5E7EB", padding: 12, borderRadius: 8, marginBottom: 12 }}
               placeholder="Edition of E-Book"
+              value={edition}
+              onChangeText={(text) => setEdition(text)}
             />
             <TextInput
-              className="bg-gray-200 rounded-md p-3"
+              style={{ backgroundColor: "#E5E7EB", padding: 12, borderRadius: 8, marginBottom: 12 }}
               placeholder="Description"
+              multiline
+              numberOfLines={4}
+              value={description}
+              onChangeText={(text) => setDescription(text)}
             />
-            <TouchableOpacity className="bg-teal-500 rounded-md p-3 items-center">
-              <Text className="text-white font-semibold">Request</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: "#4B5563", padding: 12, borderRadius: 8, alignItems: "center" }}
+              onPress={handleRequest}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Request</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -63,4 +108,4 @@ const wishlist = () => {
   );
 };
 
-export default wishlist;
+export default Wishlist;

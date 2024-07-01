@@ -7,7 +7,7 @@ import useFetchUsers from "../../middleware/fetchUsers"; // Import Middleware
 export default function SignIn() {
   const navigation = useNavigation();
   const { isLoggedIn, setIsLoggedIn } = useGlobalContext();
-  const { user, setUser } = useGlobalContext();
+cl
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
