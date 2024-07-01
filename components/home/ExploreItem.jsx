@@ -1,4 +1,3 @@
-// ExploreItem.js
 import React from "react";
 import ExploreBook from "./ExploreBook";
 
@@ -7,4 +6,3 @@ const ExploreItem = ({ book, openPdf }) => {
 };
 
 export default ExploreItem;
-
