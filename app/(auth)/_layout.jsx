@@ -1,12 +1,19 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignInScreen from "./sign-in";
+import SignUpScreen from "./sign-up";
 
-const _layout = () => {
+const Stack = createStackNavigator();
+
+const AuthLayout = () => {
   return (
-    <View>
-      <Text>_layout</Text>
-    </View>
+    <>
+      <Stack.Navigator>
+        <Stack.Screen name="signin" component={SignInScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="signup" component={SignUpScreen} options={{ headerShown: false }}/>
+      </Stack.Navigator>
+    </>
   );
 };
 
-export default _layout;
+export default AuthLayout;

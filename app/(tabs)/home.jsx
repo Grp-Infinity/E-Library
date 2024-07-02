@@ -1,5 +1,5 @@
 // Home.js
-import React, { useState } from "react";
+import React, { useState} from "react";
 import {
   View,
   Text,
@@ -13,13 +13,14 @@ import EmptyState from "../../components/EmptyState";
 import Header from "../../components/home/Header";
 import Categories from "../../components/home/Categories";
 import LatestSection from "../../components/home/LatestSection";
-import { libraryBooks } from "../../components/sampleData";
 import ExploreItem from "../../components/home/ExploreItem";
+import usefetchBooks from '../../middleware/fetchBooks';  // Fetch Book Data from Middleware
+
 
 const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [pdfUri, setPdfUri] = useState(null);
-
+  
   const onRefresh = async () => {
     setRefreshing(true);
     // Add your refresh logic here
@@ -33,6 +34,12 @@ const Home = () => {
   const closePdf = () => {
     setPdfUri(null);
   };
+
+/////////////////////////////////////////
+
+const {libraryBooks} = usefetchBooks();  // Get books Array
+
+/////////////////////////////////////////
 
   return (
     <SafeAreaView className="bg-white p-2 h-full">
