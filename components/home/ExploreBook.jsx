@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -24,7 +23,7 @@ const ExploreBook = ({ book }) => {
       onPress={openBook}
       className="flex flex-row items-center m-2"
     >
-      <Image source={book.image} className="w-16 h-24 rounded-lg" />
+      <Image source={{ uri: book.image }} className="w-16 h-24 rounded-lg" />
       <View className="flex flex-col ml-4 flex-1">
         <Text className="text-sm font-bold">{book.title}</Text>
         <Text className="text-xs text-gray-500">By {book.author}</Text>
